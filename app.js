@@ -1,5 +1,5 @@
 const express = require("express")
-const studentRouter = require("./src/routes/studentRouter")
+const userRouter = require("./src/routes/userRouter")
 const app = express()
 const cors = require("cors")
 const dotenv = require("dotenv")
@@ -43,7 +43,7 @@ mongoose.connect(url, option)
     })
 
 
-app.use("/api/v1", studentRouter)
+app.use("/api/v1", userRouter)
 
 // 404 page define
 app.use("*", (req, res) => {
