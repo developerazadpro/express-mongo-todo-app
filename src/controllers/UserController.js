@@ -1,5 +1,6 @@
 const UserModel = require("../models/UserModel")
-const {hashPassword} = require("../helper/PasswordHelper");
+const {hashPassword, comparePassword} = require("../helper/PasswordHelper");
+const jwt = require("jsonwebtoken")
 
 // save student
 exports.createUser = async(req, res) => {
@@ -59,6 +60,49 @@ exports.createUser = async(req, res) => {
     }
 } 
 
+exports.login = async (req, res) => {
+    try{
+        // destructure field from request body
+        const {userName, password} = req.body
+        // validation
+        if(!userName.trim()){
+            return res.json({error: "User Name is required"})
+        }
+        if(!password.trim()){
+            return res.json({error: "Password is required"})
+        }
+
+        // check if user exist
+        const user = await UserModel.findOne({userName})
+        if(!user){
+            return res.json({error: "User not found"})
+        }
+        // compare password
+        const match = await comparePassword(password, user.password);
+        if(!match){
+            return res.json({error: "Invalid username of password"})
+        }
+
+        const token = jwt.sign(
+            {_id:user._id},
+            process.env.PRIVATE_KEY,
+            {expiresIn: '1h'}
+        )
+        
+        res.status(200).json({
+            status: "success",
+            data: user,
+            token
+        })
+        
+    }catch(error){
+        console.log("Error login", error)
+        res.status(200).json({
+            status: "failed",
+            data: "login error"
+        })
+    }
+}
 
 // read students 
 /*

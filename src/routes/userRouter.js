@@ -12,6 +12,7 @@ const router = express.Router()
 
 // User
 router.post("/create-user", UserController.createUser)
+router.post("/login", UserController.login)
 
 // jwt authenticate
 // router.get("/students", TokenVerifyMiddleware, StudentsController.getAllStudents)
