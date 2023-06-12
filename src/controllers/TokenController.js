@@ -8,14 +8,14 @@ exports.createToken = (req, res) => {
     }
     let token = jwt.sign({
         data:data
-    }, process.env.SECRET_KEY, {expiresIn: '1h'})
+    }, process.env.PRIVATE_KEY, {expiresIn: '1h'})
     res.send(token)
 }
 
 // verify token
 exports.verifyToken = (req, res) => {
     let token = req.headers['authorization']
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, process.env.PRIVATE_KEY, (err, decoded) => {
         if(err){
             res.status(401).json({
                 status: "Invalid Token",

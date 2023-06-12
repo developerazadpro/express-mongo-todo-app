@@ -8,6 +8,6 @@ exports.issueToken = (req, res) => {
     }
     let token = jwt.sign({
         data:data
-    }, process.env.SECRET_KEY, {expiresIn: '1h'})
+    }, process.env.PRIVATE_KEY, {expiresIn: '1h'})
     res.send(token)
 }
